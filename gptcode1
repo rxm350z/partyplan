@@ -1,0 +1,43 @@
+// Set up canvas
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Set table size and number
+const tableRadius = 50;
+const numTables = 5;
+
+// Calculate table positions
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const tablePositions = [];
+for (let i = 0; i < numTables; i++) {
+  const angle = (i / numTables) * 2 * Math.PI;
+  const x = centerX + Math.cos(angle) * (canvas.width / 3);
+  const y = centerY + Math.sin(angle) * (canvas.height / 3);
+  tablePositions.push({x, y});
+}
+
+// Draw tables
+ctx.fillStyle = '#8B4513'; // Brown
+for (let i = 0; i < numTables; i++) {
+  const {x, y} = tablePositions[i];
+  ctx.beginPath();
+  ctx.arc(x, y, tableRadius, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+// Place guests
+const guestRadius = 10;
+ctx.fillStyle = '#000000'; // Black
+for (let i = 0; i < numTables; i++) {
+  const {x, y} = tablePositions[i];
+  const numGuests = Math.floor(Math.random() * 6) + 1; // Random number of guests (1-6)
+  for (let j = 0; j < numGuests; j++) {
+    const angle = (j / numGuests) * 2 * Math.PI;
+    const guestX = x + Math.cos(angle) * (tableRadius + guestRadius + 5);
+    const guestY = y + Math.sin(angle) * (tableRadius + guestRadius + 5);
+    ctx.beginPath();
+    ctx.arc(guestX, guestY, guestRadius, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
